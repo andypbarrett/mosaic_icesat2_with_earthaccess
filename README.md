@@ -6,6 +6,18 @@ The demonstration was developed to run in the Openscapes 2i2c Hub in AWS region 
 To run the demonstration you will need to clone the repo in you hub compute instance.
 
 ```
-$ git clone
+$ git clone https://github.com/andypbarrett/mosaic_icesat2_with_earthaccess.git
 ```
 
+Navigate to the `mosaic_icesat2_with_earthaccess` folder.  The notebook is in the `notebooks` folder.
+
+If you are working in the Openscapes 2i2c hub, all the Python packages should be installed.  If you are working in a different cloud compute instance or on a local machine, you will need to have the required packages installed.
+
+Required packages:
+- earthaccess
+- xarray
+- pandas
+- geopandas
+- matplotlib
+- cartopy
+- shapely
