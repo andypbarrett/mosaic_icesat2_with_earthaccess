@@ -7,7 +7,28 @@ from shapely.geometry import Point, LineString
 import xarray as xr
 import geopandas as gpd
 
-# def to_linstring(ds):
+def point_to_linestring(ds, group, every):
+    """Converts arrays of geographic coordinates to a shapely.LineString
+
+    Arguments:
+      ds : xarray.Dataset or xarray.DataTree object
+      group : name of group to extract coordinates
+      every : sample every point
+
+    Returns:
+      shapely.LineString
+    """
+    line = LineString(
+        [
+            (lon, lat) 
+            for lon, lat in zip(
+                ds[f"{group}/freeboard_segment/longitude"][::every], 
+                ds[f"{group}/freeboard_segment/latitude"][::every]
+                )
+            ]
+        )
+    return line
+    
     
 def extract_beams(ds: xr.DataTree, every: int=1000) -> List:
     """
@@ -27,15 +48,11 @@ def extract_beams(ds: xr.DataTree, every: int=1000) -> List:
     for group in ds.groups:
         if p.match(group):
             if ds[group].attrs['atlas_beam_type'] == "strong":
-                line = LineString(
-                    [
-                        (lon, lat) 
-                        for lon, lat in zip(
-                            ds[f"{group}/freeboard_segment/longitude"][::every], 
-                            ds[f"{group}/freeboard_segment/latitude"][::every]
-                            )
-                        ]
-                    )
+                try:
+                    line = point_to_linestring(ds, group, every)
+                except Exception as err:
+                    raise RunTimeError
+                    
                 geometries.append(line)
 
     return geometries
