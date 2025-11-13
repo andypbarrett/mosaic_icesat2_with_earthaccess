@@ -7,7 +7,7 @@ from shapely.geometry import Point, LineString
 import xarray as xr
 import geopandas as gpd
 
-def to_linstring(ds):
+# def to_linstring(ds):
     
 def extract_beams(ds: xr.DataTree, every: int=1000) -> List:
     """
